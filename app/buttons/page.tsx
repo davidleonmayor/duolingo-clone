@@ -10,8 +10,19 @@ const ButtonsPage = () => {
       <Button variant="secondaryOutline">Secondary Outline</Button>
       <Button variant="danger">Danger</Button>
       <Button variant="dangerOutline">Danger Outline</Button>
+      <Button variant="super">Super</Button>
+      <Button variant="superOutline">Super Outline</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="sidebar">Sidebar</Button>
+      <Button variant="sidebarOutline">Sidebar Outline</Button>
 
-      {/* <Button className="bg-white text-green-500 hover:bg-slate-100">Primary Outline</Button> */}
+      {/* <Button
+        className="
+       bg-sky-500/15 text-sky-500 border-sky-300 border-2 hover:bg-sky-500/20 transition-none
+      "
+      >
+        Text
+      </Button> */}
     </div>
   );
 };

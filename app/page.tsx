@@ -2,8 +2,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <Button size="sm" variant="destructive">
-      Click me
-    </Button>
+    // variant="destructive"
+    <Button size="sm">Click me</Button>
   );
 }
