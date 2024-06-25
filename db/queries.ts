@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs/server";
 
 import db from "./drizzle";
-import { userProgress } from "@/db/schema";
+import { courses, userProgress } from "@/db/schema";
 
 /**
  * Retrieves the user progress from the database.
@@ -21,6 +21,15 @@ export const getUserProgress = cache(async () => {
     with: {
       activeCourse: true,
     },
+  });
+
+  return data;
+});
+
+export const getCourseById = cache(async (courseId: number) => {
+  const data = await db.query.courses.findFirst({
+    where: eq(courses.id, courseId),
+    // TODO: Populate units and lessons
   });
 
   return data;
