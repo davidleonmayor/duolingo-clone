@@ -1,10 +1,11 @@
 "use client";
-import { courses } from "@/db/schema";
+// import { courses, type userProgress } from "@/db/schema"; // TODO: is better only import the type?
+import { courses, userProgress } from "@/db/schema";
 import { Card } from "./card";
 
 type Props = {
   courses: (typeof courses.$inferInsert)[];
-  activeCourseId: number;
+  activeCourseId?: typeof userProgress.$inferSelect.activeCourseId;
 };
 
 export const List = ({ courses, activeCourseId }: Props) => {

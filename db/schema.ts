@@ -1,42 +1,33 @@
-import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { integer, pgTable, serial, text } from "drizzle-orm/pg-core";
 
 export const courses = pgTable("courses", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
-  // description: text("description").notNull(),
   imageSrc: text("image_src").notNull(),
-  // price: integer("price").notNull(),
-  // createdAt: timestamp("created_at").notNull().defaultNow(),
-  // updatedAt: timestamp("updated_at")
-  //   .notNull()
-  //   .$onUpdate(() => new Date()),
 });
 
-export const usersTable = pgTable("users_table", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  age: integer("age").notNull(),
-  email: text("email").notNull().unique(),
+export const courseRelations = relations(courses, ({ many }) => ({
+  userProgress: many(userProgress),
+}));
+
+export const userProgress = pgTable("user_progress", {
+  userId: text("user_id").primaryKey(),
+  userName: text("user_name").notNull().default("User"),
+  userImageSrc: text("user_image_src").notNull().default("/mascot.svg"),
+  activeCourseId: integer("active_course_id").references(() => courses.id, {
+    onDelete: "cascade",
+  }),
+  hearts: integer("hearts").notNull().default(5),
+  points: integer("points").notNull().default(0),
 });
 
-export const postsTable = pgTable("posts_table", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  content: text("content").notNull(),
-  userId: integer("user_id")
-    .notNull()
-    .references(() => usersTable.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at")
-    .notNull()
-    .$onUpdate(() => new Date()),
-});
-
-export type InsertUser = typeof usersTable.$inferInsert;
-export type SelectUser = typeof usersTable.$inferSelect;
-
-export type InsertPost = typeof postsTable.$inferInsert;
-export type SelectPost = typeof postsTable.$inferSelect;
+export const userProgressRelations = relations(userProgress, ({ one }) => ({
+  activeCourse: one(courses, {
+    fields: [userProgress.activeCourseId],
+    references: [courses.id],
+  }),
+}));
 
 export type InsertCourses = typeof courses.$inferInsert;
 export type SelectCourses = typeof courses.$inferSelect;

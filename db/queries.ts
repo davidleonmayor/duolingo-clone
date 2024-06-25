@@ -1,5 +1,30 @@
 import { cache } from "react";
+import { eq } from "drizzle-orm";
+import { auth } from "@clerk/nextjs/server";
+
 import db from "./drizzle";
+import { userProgress } from "@/db/schema";
+
+/**
+ * Retrieves the user progress from the database.
+ * @returns {Promise<UserProgress>} A promise that resolves to the user progress.
+ */
+export const getUserProgress = cache(async () => {
+  const { userId } = auth();
+
+  if (!userId) {
+    return null;
+  }
+
+  const data = await db.query.userProgress.findFirst({
+    where: eq(userProgress.userId, userId),
+    with: {
+      activeCourse: true,
+    },
+  });
+
+  return data;
+});
 
 /**
  * Retrieves the courses from the database.
@@ -10,24 +35,3 @@ export const getCourses = cache(async () => {
 
   return data;
 });
-
-// import { asc, between, count, eq, getTableColumns, sql } from "drizzle-orm";
-// import db from "./drizzle";
-// import {
-//   InsertUser,
-//   SelectUser,
-//   postsTable,
-//   usersTable,
-//   courses,
-// } from "./schema";
-
-// export async function getCourses(): Promise<
-//   Array<{
-//     id: number;
-//     title: string;
-//     imageSrc: string;
-//   }>
-// > {
-//   // return db.select().from(courses).where(eq(usersTable.id, id));
-//   return db.select().from(courses);
-// }
