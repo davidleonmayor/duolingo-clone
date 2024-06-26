@@ -16,6 +16,11 @@ const seed = async () => {
   console.log("Deleting all data...");
   await db.delete(schema.courses);
   await db.delete(schema.userProgress);
+  await db.delete(schema.units);
+  await db.delete(schema.lessons);
+  await db.delete(schema.challenges);
+  await db.delete(schema.challengeOption);
+  await db.delete(schema.challengeProgress);
 
   console.log("Inserting data...");
   await db.insert(schema.courses).values([
@@ -40,6 +45,100 @@ const seed = async () => {
       imageSrc: "hr.svg",
     },
   ]);
+  await db.insert(schema.units).values([
+    {
+      id: 1,
+      title: "Unit 1",
+      description: "Learn the basics of Spanish",
+      courseId: 1,
+      order: 1,
+    },
+    {
+      id: 2,
+      title: "Verbs ",
+      description: "Learn to greet people",
+      courseId: 1,
+      order: 2,
+    },
+  ]);
+  await db.insert(schema.lessons).values([
+    {
+      id: 1,
+      title: "Nouns",
+      unitId: 1,
+      order: 1,
+    },
+    {
+      id: 2,
+      title: "To Eat",
+      unitId: 1,
+      order: 2,
+    },
+  ]);
+  await db.insert(schema.challenges).values([
+    {
+      id: 1,
+      lessonId: 1,
+      type: "SELECT",
+      question: 'Which one of these is the "the man"?',
+      order: 1,
+    },
+    {
+      id: 2,
+      lessonId: 1,
+      type: "ASSIST",
+      question: "What is the translation of 'To Eat'?",
+      order: 2,
+    },
+  ]);
+  await db.insert(schema.challengeOption).values([
+    {
+      id: 1,
+      challengeId: 1,
+      text: "el hombre",
+      correct: true,
+      imageSrc: "/man.svg",
+      audioSrc: "/es_man.mp3",
+    },
+    {
+      id: 2,
+      challengeId: 1,
+      text: "la mujer",
+      correct: false,
+      imageSrc: "/woman.svg",
+      audioSrc: "/es_woman.mp3",
+    },
+    {
+      id: 3,
+      challengeId: 1,
+      text: "el robot",
+      correct: false,
+      imageSrc: "/robot.svg",
+      audioSrc: "/es_robot.mp3",
+    },
+    // -- second challenge
+    {
+      id: 4,
+      challengeId: 2,
+      text: "Comer",
+      correct: true,
+    },
+    {
+      id: 5,
+      challengeId: 2,
+      text: "Beber",
+      correct: false,
+    },
+  ]);
+
+  await db.insert(schema.userProgress).values({
+    userId: "test", // the correct user auth id
+    userName: "david",
+    userImageSrc: "/mascot.svg",
+    activeCourseId: 1,
+    hearts: 5,
+    points: 0,
+  });
 
   console.log("Seeding Finished!");
 };
