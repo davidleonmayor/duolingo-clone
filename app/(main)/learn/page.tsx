@@ -1,10 +1,4 @@
-/*
-1) cuando selecione el curso a iniciar, se relacinar el curso con el usuario
-2) se debe mostrar el tomara esos datos enviados y mostrara en la pagina "learn"
-*/
-
 import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
 
 import { getUserProgress } from "@/db/queries";
 import { StickyWrapper } from "@/components/sticky-wrapper";
