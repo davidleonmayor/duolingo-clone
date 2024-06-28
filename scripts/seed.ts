@@ -70,9 +70,27 @@ const seed = async () => {
     },
     {
       id: 2,
-      title: "To Eat",
+      title: "Lesson 2",
       unitId: 1,
       order: 2,
+    },
+    {
+      id: 3,
+      title: "Lesson 3",
+      unitId: 1,
+      order: 3,
+    },
+    {
+      id: 4,
+      title: "Lesson 4",
+      unitId: 1,
+      order: 4,
+    },
+    {
+      id: 5,
+      title: "Lesson 5",
+      unitId: 1,
+      order: 5,
     },
   ]);
   await db.insert(schema.challenges).values([
@@ -149,11 +167,9 @@ const main = async () => {
   } catch (error) {
     console.error("Error during seeding:", error);
     process.exit(1);
+  } finally {
+    process.exit(0);
   }
-  // finally {
-  //   console.log("Closing connection...");
-  //   process.exit(1);
-  // }
 };
 
 main();
