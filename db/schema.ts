@@ -145,3 +145,21 @@ export const userProgressRelations = relations(userProgress, ({ one }) => ({
 
 export type InsertCourses = typeof courses.$inferInsert;
 export type SelectCourses = typeof courses.$inferSelect;
+
+export type InsertUnits = typeof units.$inferInsert;
+export type SelectUnits = typeof units.$inferSelect;
+
+export type InsertLessons = typeof lessons.$inferInsert;
+export type SelectLessons = typeof lessons.$inferSelect;
+
+export type InsertChallenges = typeof challenges.$inferInsert;
+export type SelectChallenges = typeof challenges.$inferSelect;
+
+export type InsertChallengeOptions = typeof challengeOption.$inferInsert;
+export type SelectChallengeOptions = typeof challengeOption.$inferSelect;
+
+export type InsertChallengeProgress = typeof challengeProgress.$inferInsert;
+export type SelectChallengeProgress = typeof challengeProgress.$inferSelect;
+
+export type InsertUserProgress = typeof userProgress.$inferInsert;
+export type SelectUserProgress = typeof userProgress.$inferSelect;

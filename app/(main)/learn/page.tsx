@@ -5,6 +5,7 @@ import { StickyWrapper } from "@/components/sticky-wrapper";
 import { FeedWrapper } from "@/components/feed-wrapper";
 import { UserProgress } from "@/components/user-progress";
 
+import { Unit } from "./unit";
 import { Header } from "./header";
 
 const LearnPage = async () => {
@@ -35,7 +36,15 @@ const LearnPage = async () => {
         <div className="w-auto h-auto px-auto">
           {units.map((unit) => (
             <div key={unit.id} className="mb-10">
-              {JSON.stringify(unit)}
+              <Unit
+                id={unit.id}
+                order={unit.order}
+                description={unit.description}
+                title={unit.title}
+                lessons={unit.lessons}
+                activeLesson={undefined}
+                activeLessonPorcentage={0}
+              />
             </div>
           ))}
         </div>

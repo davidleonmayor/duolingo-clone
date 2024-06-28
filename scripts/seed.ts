@@ -53,13 +53,13 @@ const seed = async () => {
       courseId: 1,
       order: 1,
     },
-    {
-      id: 2,
-      title: "Verbs ",
-      description: "Learn to greet people",
-      courseId: 1,
-      order: 2,
-    },
+    // {
+    //   id: 2,
+    //   title: "Verbs ",
+    //   description: "Learn to greet people",
+    //   courseId: 1,
+    //   order: 2,
+    // },
   ]);
   await db.insert(schema.lessons).values([
     {

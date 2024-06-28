@@ -3,13 +3,7 @@ import { eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs/server";
 
 import db from "./drizzle";
-import {
-  courses,
-  userProgress,
-  units,
-  type challenges,
-  challengeProgress,
-} from "@/db/schema";
+import { courses, userProgress, units, challengeProgress } from "@/db/schema";
 
 /**
  * Retrieves the user progress from the database.
@@ -51,6 +45,10 @@ export const getCourses = cache(async () => {
   return data;
 });
 
+/**
+ * Retrieves the units data from the database and normalizes the response.
+ * @returns {Promise<Array<Unit>>} The units data.
+ */
 export const getUnits = cache(async () => {
   const { userId } = auth();
   const userProgress = await getUserProgress();
