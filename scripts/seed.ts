@@ -46,6 +46,7 @@ const seed = async () => {
     },
   ]);
   await db.insert(schema.units).values([
+    // Spanish
     {
       id: 1,
       title: "Unit 1",
@@ -53,15 +54,31 @@ const seed = async () => {
       courseId: 1,
       order: 1,
     },
-    // {
-    //   id: 2,
-    //   title: "Verbs ",
-    //   description: "Learn to greet people",
-    //   courseId: 1,
-    //   order: 2,
-    // },
+    {
+      id: 2,
+      title: "Verbs ",
+      description: "Learn to greet people",
+      courseId: 1,
+      order: 2,
+    },
+    // Italian with utalian content
+    {
+      id: 3,
+      title: "Unit 1",
+      description: "Learn the basics of Italian",
+      courseId: 2,
+      order: 1,
+    },
+    {
+      id: 4,
+      title: "Verbs ",
+      description: "Learn to greet people",
+      courseId: 2,
+      order: 2,
+    },
   ]);
   await db.insert(schema.lessons).values([
+    // Spanish lessons to unit 1
     {
       id: 1,
       title: "Nouns",
@@ -91,6 +108,19 @@ const seed = async () => {
       title: "Lesson 5",
       unitId: 1,
       order: 5,
+    },
+    // Italian lessons to unit 1
+    {
+      id: 6,
+      title: "Nouns",
+      unitId: 2,
+      order: 1,
+    },
+    {
+      id: 7,
+      title: "Lesson 2",
+      unitId: 2,
+      order: 2,
     },
   ]);
   await db.insert(schema.challenges).values([
@@ -134,7 +164,7 @@ const seed = async () => {
       imageSrc: "/robot.svg",
       audioSrc: "/es_robot.mp3",
     },
-    // -- second challenge
+    // second challenge
     {
       id: 4,
       challengeId: 2,

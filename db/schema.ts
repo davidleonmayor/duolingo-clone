@@ -8,21 +8,31 @@ import {
   boolean,
 } from "drizzle-orm/pg-core";
 
+/**
+ * Relationships between "courses" entity with other entities
+ */
 export const courses = pgTable("courses", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   imageSrc: text("image_src").notNull(),
 });
 
+/**
+ * Relationships between "courses" entity other entities
+ */
 export const courseRelations = relations(courses, ({ many }) => ({
-  userProgress: many(userProgress),
-  units: many(units),
+  userProgress: many(userProgress), // One course can have many user progress
+  units: many(units), // One course can have many units
 }));
 
+/**
+ * Relationships between "units" entity with other entities
+ */
 export const units = pgTable("units", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description").notNull(),
+  // A unit belongs to a course
   courseId: integer("course_id")
     .references(() => courses.id, {
       onDelete: "cascade",
@@ -31,6 +41,9 @@ export const units = pgTable("units", {
   order: integer("order").notNull(),
 });
 
+/**
+ * Relationships for the "units" entity with other entities
+ */
 export const unitsRelations = relations(units, ({ many, one }) => ({
   course: one(courses, {
     fields: [units.courseId],
