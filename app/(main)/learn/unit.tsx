@@ -7,11 +7,13 @@ type Lesson = SelectLessons & {
   completed: boolean;
 };
 
+type Unit = Omit<SelectUnits, "courseId">;
+
 type ActiveLesson = SelectLessons & {
-  unit: Omit<SelectUnits, "courseId">;
+  unit: Unit;
 };
 
-type Props = Omit<SelectUnits, "courseId"> & {
+type Props = Unit & {
   lessons: Lesson[];
   activeLesson: ActiveLesson | undefined;
   activeLessonPorcentage: number;

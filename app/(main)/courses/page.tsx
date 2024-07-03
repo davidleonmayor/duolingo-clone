@@ -2,14 +2,17 @@ import { getCourses, getUserProgress } from "@/db/queries";
 import { List } from "./list";
 
 const CoursesPage = async () => {
-  // TODO: check if this is the best way to do it
-  // const [courses, userProgress] = await Promise.all([getCourses(), getUserProgress()]);
-  const coursesData = getCourses();
-  const userProgressData = getUserProgress();
+  // const coursesData = getCourses();
+  // const userProgressData = getUserProgress();
 
+  // const [courses, userProgress] = await Promise.all([
+  //   coursesData,
+  //   userProgressData,
+  // ]);
+  // TODO: check if this wey doesn't cause a bug
   const [courses, userProgress] = await Promise.all([
-    coursesData,
-    userProgressData,
+    getCourses(),
+    getUserProgress(),
   ]);
 
   return (

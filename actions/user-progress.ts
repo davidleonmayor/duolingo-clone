@@ -8,6 +8,12 @@ import db from "@/db/drizzle";
 import { userProgress } from "@/db/schema";
 import { getCourseById, getUserProgress } from "@/db/queries";
 
+/**
+ * Updates or inserts user progress for a given course.
+ *
+ * @param {number} courseId - The ID of the course.
+ * @throws {Error} Throws an error if the user is not authenticated or the course is not found.
+ */
 export const upserUserProgress = async (courseId: number) => {
   const { userId } = auth();
   const user = await currentUser();
@@ -29,6 +35,7 @@ export const upserUserProgress = async (courseId: number) => {
 
   const existingUserProgress = await getUserProgress();
 
+  // If user progress exists, update it and redirect to the learn page
   if (existingUserProgress) {
     await db.update(userProgress).set({
       activeCourseId: courseId,
@@ -41,6 +48,7 @@ export const upserUserProgress = async (courseId: number) => {
     redirect("/learn");
   }
 
+  // Otherwise, insert a new user progress record
   await db.insert(userProgress).values({
     userId,
     activeCourseId: courseId,

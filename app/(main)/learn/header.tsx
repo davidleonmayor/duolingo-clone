@@ -16,6 +16,7 @@ export const Header = ({ title }: Props) => {
         </Button>
       </Link>
       <h1 className="font-bold text-lg">{title}</h1>
+      {/* Empty div for spacing */}
       <div />
     </div>
   );

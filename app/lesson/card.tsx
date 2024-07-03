@@ -17,6 +17,18 @@ type Props = {
   type: SelectChallenges["type"];
 };
 
+/**
+ * Represents a card component that can display different types of content such as images, audio, and text.
+ * It supports interaction through clicking and can indicate selection and status.
+ *
+ * @param props - The properties passed to the component.
+ * @param props.title - The title displayed on the card.
+ * @param props.id - The identifier for the card, used in the onClick handler.
+ * @param props.imageSrc - The source URL for the card image.
+ * @param props.onClick - Callback function triggered when the card is clicked.
+ * @param props.disabled - If true, the card is non-interactive and dimmed. Defaults to false.
+ * @param props.active - If true, the card shows an active indicator. Defaults to false.
+ */
 export const Card = ({
   id,
   imageSrc,
@@ -33,7 +45,9 @@ export const Card = ({
     <div
       onClick={() => {}}
       className={cn(
+        // basic stules
         "h-full border-2 rounded-xl border-b-4 hover:bg-black/5 p-4 lg:p-6 cursor-pointer active:border-b-2",
+        // conditional styles
         selected && "border-sky-300 bg-sky-100 hover:bg-sky-100",
         selected &&
           status === "correct" &&
@@ -72,6 +86,7 @@ export const Card = ({
         >
           {text}
         </p>
+        {/* Container for the shortcut text, it's work with keyboard */}
         <div
           className={cn(
             "lg:w-[30px] lg:h-[30px] w-[20px] border-2 flex items-center justify-center rounded-lg text-neutral-400 lg:text-[15px] text-xs font-semibold",

@@ -11,6 +11,9 @@ const sql = neon(process.env.DATABASE_URL!);
 // @ts-ignore
 const db = drizzle(sql, { schema }); // If you have a type error here, maybe is for incopatibility versions of drizzle-orm and neon-http
 
+/**
+ * Seed the database with some initial data, removing all existing data first.
+ */
 const seed = async () => {
   console.log("Seeding database...");
   console.log("Deleting all data...");

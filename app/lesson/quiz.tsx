@@ -25,6 +25,15 @@ type Props = {
   userDescription: any; // TODO: Define userDescription type from db
 };
 
+/**
+ * Quiz component for displaying a quiz with challenges.
+ *
+ * @param {number} initialPercentage - Initial percentage of quiz progress.
+ * @param {number} initialHearts - Initial number of user's hearts.
+ * @param {number} initialLessonId - ID of the initial lesson.
+ * @param {InitialLessonChallenges[]} initialLessonChallenges - List of initial lesson challenges.
+ * @param {any} userDescription - User description (for verifying active subscription, for example).
+ */
 export const Quiz = ({
   initialPercentage,
   initialHearts,
@@ -37,6 +46,7 @@ export const Quiz = ({
   const [challenges, setchallenges] = useState<InitialLessonChallenges[]>(
     initialLessonChallenges
   );
+  // index of first uncompleted challenge or 0 if all are completed
   const [activeIndex, setActiveIndex] = useState<number>(() => {
     const uncompletedIndex = challenges.findIndex(
       (challenge) => !challenge.completed

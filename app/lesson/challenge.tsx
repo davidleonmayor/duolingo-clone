@@ -13,6 +13,17 @@ type Props = {
   type: SelectChallenges["type"];
 };
 
+/**
+ * Component that displays multiple options as cards.
+ * Users can select an option, and the component visually indicates the current status (correct, wrong, none).
+ *
+ * @param {SelectChallengeOptions[]} props.options - Array of options to display as cards.
+ * @param {Function} props.onSelect - Callback function invoked with the id of the selected option.
+ * @param {"correct"|"wrong"|"none"} props.status - Current status of the challenge, affecting visual feedback.
+ * @param {number} [props.selectedOption] - The id of the currently selected option, if any.
+ * @param {boolean} [props.disabled=false] - If true, disables interaction with the challenge.
+ * @param {SelectChallenges["type"]} props.type - The type of challenge, influencing how options are rendered.
+ */
 export const Challenge = ({
   options,
   onSelect,

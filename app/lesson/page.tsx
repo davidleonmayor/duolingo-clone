@@ -6,12 +6,17 @@ import { Quiz } from "./quiz";
 type Props = {};
 
 const LessonPage = async ({}: Props) => {
-  const getLessonData = getLesson();
-  const getUserProgressData = getUserProgress();
+  // const getLessonData = getLesson();
+  // const getUserProgressData = getUserProgress();
 
+  // const [lesson, userProgress] = await Promise.all([
+  //   getLessonData,
+  //   getUserProgressData,
+  // ]);
+  // TODO: check if bug
   const [lesson, userProgress] = await Promise.all([
-    getLessonData,
-    getUserProgressData,
+    getLesson(),
+    getUserProgress(),
   ]);
 
   if (!lesson || !userProgress) {

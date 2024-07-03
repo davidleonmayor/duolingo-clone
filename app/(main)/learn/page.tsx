@@ -1,32 +1,39 @@
-import { SelectLessons, SelectUnits } from "@/db/schema";
-
 import { redirect } from "next/navigation";
 
 import { StickyWrapper } from "@/components/sticky-wrapper";
 import { FeedWrapper } from "@/components/feed-wrapper";
 import { UserProgress } from "@/components/user-progress";
+import { Unit } from "./unit";
+import { Header } from "./header";
+
 import {
   getCourseProgress,
   getLessonPercentage,
   getUnits,
   getUserProgress,
 } from "@/db/queries";
-
-import { Unit } from "./unit";
-import { Header } from "./header";
+import { SelectLessons, SelectUnits } from "@/db/schema";
 
 const LearnPage = async () => {
-  const userProgressData = getUserProgress();
-  const courseProgressData = getCourseProgress();
-  const lessonPercentageData = getLessonPercentage();
-  const unitsData = getUnits();
+  // const userProgressData = getUserProgress();
+  // const courseProgressData = getCourseProgress();
+  // const lessonPercentageData = getLessonPercentage();
+  // const unitsData = getUnits();
 
+  // const [userProgress, units, courseProgress, lessonPercentage] =
+  //   await Promise.all([
+  //     userProgressData,
+  //     unitsData,
+  //     courseProgressData,
+  //     lessonPercentageData,
+  //   ]);
+  // TODO: check if doesn't make a bug
   const [userProgress, units, courseProgress, lessonPercentage] =
     await Promise.all([
-      userProgressData,
-      unitsData,
-      courseProgressData,
-      lessonPercentageData,
+      getUserProgress(),
+      getUnits(),
+      getCourseProgress(),
+      getLessonPercentage(),
     ]);
 
   if (!userProgress || !userProgress.activeCourse) {

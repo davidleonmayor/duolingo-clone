@@ -7,6 +7,12 @@ type Props = {
   description: string;
 };
 
+/**
+ * Banner with a title, description, and a button that links to a lesson.
+ *
+ * @param props.title - The title displayed in the banner.
+ * @param props.description - The description displayed under the title.
+ */
 export const UnitBanner = ({ title, description }: Props) => {
   return (
     <div className="w-full rounded-xl bg-green-500 p-5 text-white flex items-center justify-between ">

@@ -7,6 +7,7 @@ type Props = {
 export const QuestionBubble = ({ question }: Props) => {
   return (
     <div className="flex items-center gap-x-4 mb-6">
+      {/* Mascot image shown only on large screens */}
       <Image
         src="/mascot.svg"
         alt="Mascot"
@@ -14,6 +15,7 @@ export const QuestionBubble = ({ question }: Props) => {
         width={60}
         className="hidden lg:block"
       />
+      {/* Mascot image shown only on small screens */}
       <Image
         src="/mascot.svg"
         alt="Mascot"

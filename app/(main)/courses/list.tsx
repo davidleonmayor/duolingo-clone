@@ -1,23 +1,31 @@
 "use client";
-import { toast } from "sonner";
+
+import type { SelectCourses, SelectUserProgress } from "@/db/schema";
+
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 
-// import { courses, type userProgress } from "@/db/schema"; // TODO: is better only import the type?
-import { courses, userProgress } from "@/db/schema";
 import { upserUserProgress } from "@/actions/user-progress";
+import { toast } from "sonner";
 
 import { Card } from "./card";
 
 type Props = {
-  courses: (typeof courses.$inferSelect)[];
-  activeCourseId?: typeof userProgress.$inferSelect.activeCourseId;
+  courses: SelectCourses[];
+  activeCourseId?: SelectUserProgress["activeCourseId"];
 };
 
+/**
+ * Displays a grid of course cards, allowing the user to select a course.
+ *
+ * @param props.courses - List of courses to display.
+ * @param props.activeCourseId - ID of the currently active course. Optional.
+ */
 export const List = ({ courses, activeCourseId }: Props) => {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
+  // Callback triggered when is clicked, updates user progress
   const onClick = (id: number) => {
     if (pending) return;
 

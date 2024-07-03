@@ -1,5 +1,8 @@
 import { Loader } from "lucide-react";
 
+/**
+ * Displays a spinning loader icon centered within the container.
+ */
 const Loading = () => {
   return (
     <div className="h-full w-full  flex items-center justify-center ">

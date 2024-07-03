@@ -15,14 +15,6 @@ const ButtonsPage = () => {
       <Button variant="ghost">Ghost</Button>
       <Button variant="sidebar">Sidebar</Button>
       <Button variant="sidebarOutline">Sidebar Outline</Button>
-
-      {/* <Button
-        className="
-       bg-sky-500/15 text-sky-500 border-sky-300 border-2 hover:bg-sky-500/20 transition-none
-      "
-      >
-        Text
-      </Button> */}
     </div>
   );
 };

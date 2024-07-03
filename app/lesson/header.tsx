@@ -10,6 +10,13 @@ type Props = {
   hasActiveSubscription: boolean;
 };
 
+/**
+ * Header component that displays user's hearts, progress percentage, and subscription status.
+ *
+ * @param props.hearts - The number of hearts (lives or health points) the user has.
+ * @param props.percentage - The user's progress percentage in the current level or task.
+ * @param props.hasActiveSubscription - Whether the user has an active subscription.
+ */
 export const Header = ({
   hearts,
   percentage,
