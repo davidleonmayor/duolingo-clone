@@ -5,6 +5,7 @@ type ExitModalState = {
   open: () => void;
   close: () => void;
 };
+
 /**
  * Store for the exit modal when the user tries to leave the lesson
  * @returns ExitModalState
