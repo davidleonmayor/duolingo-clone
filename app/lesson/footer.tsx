@@ -1,4 +1,4 @@
-import { useKey, useMedia } from "react-use";
+import { useMedia } from "react-use";
 import { CheckCircle, XCircle } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -23,6 +23,7 @@ export const Footer = ({ onCheck, status, disabled, lessonId }: Props) => {
       )}
     >
       <div className="max-w-[1140px] h-full mx-auto flex items-center justify-betweeb px-6 lg:px-10">
+        {/* aparience depends of status of answer */}
         {status === "correct" && (
           <div className="text-green-500 font-bold text-base lg:text-2xl flex items-center">
             <CheckCircle className="h-6 w-6 lg:h-10 mr-4" />
@@ -36,9 +37,6 @@ export const Footer = ({ onCheck, status, disabled, lessonId }: Props) => {
           </div>
         )}
         {status === "completed" && (
-          // <div className="text-transparent font-bold text-base lg:text-2xl flex items-center">
-          //   Next chapter
-          // </div>
           <Button
             variant="default"
             size={isMobile ? "sm" : "lg"}
@@ -47,6 +45,7 @@ export const Footer = ({ onCheck, status, disabled, lessonId }: Props) => {
             Practice again
           </Button>
         )}
+        {/* depends of status of answer */}
         <Button
           disabled={disabled}
           className="ml-auto"
