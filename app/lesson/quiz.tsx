@@ -1,10 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useAudio } from "react-use";
+import { useAudio, useMount } from "react-use";
 import { useRouter } from "next/navigation";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
+
+import { useHeartsModal } from "@/store/use-hearts-modal";
+import { usePracticeModal } from "@/store/use-practice-modal";
 
 import { upsertChallengeProgress } from "@/actions/challenge-progress";
 import { reduceHearts } from "@/actions/user-progress";
@@ -52,10 +55,22 @@ export const Quiz = ({
   const [pending, startTransition] = useTransition();
   const { width, height } = useWindowSize();
 
+  const { open: openHeartsModal } = useHeartsModal();
+  const { open: openPracticeModal } = usePracticeModal();
+
+  useMount(() => {
+    if (initialPercentage === 100) {
+      openPracticeModal();
+    }
+  });
+
   const [lessonId] = useState(initialLessonId); // ID of the lesson
 
   const [hearts, setHearts] = useState(initialHearts);
-  const [Percentage, setPercentage] = useState(initialPercentage);
+  // if the initial percentage is 100, the quiz is a practice, else is a lesson
+  const [Percentage, setPercentage] = useState(() => {
+    return initialPercentage === 100 ? 0 : initialPercentage;
+  });
   const [challenges, setchallenges] = useState(initialLessonChallenges);
   // index of first uncompleted challenge or 0 if all are completed
   const [activeIndex, setActiveIndex] = useState(() => {
@@ -78,6 +93,9 @@ export const Quiz = ({
     src: "/success.mp3",
     autoPlay: true,
   });
+  const [failfareAudio, , failfareControls] = useAudio({
+    src: "/failfare.mp3",
+  });
 
   const challenge = challenges[activeIndex];
   const options = challenge?.challengeOptions ?? [];
@@ -87,7 +105,7 @@ export const Quiz = ({
     setActiveIndex((current) => current + 1);
   };
 
-  // sets the selected option ID, but only if no option has been selected yet
+  // sets the selected option ID,  but only if no option has been selected yet
   const onSelect = (id: number) => {
     if (status !== "none") {
       return;
@@ -126,7 +144,8 @@ export const Quiz = ({
         upsertChallengeProgress(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
-              console.log("Missing hearts");
+              failfareControls.play();
+              openHeartsModal();
               return;
             }
 
@@ -149,7 +168,8 @@ export const Quiz = ({
               toast.error("This is a practice. No hearts to reduce.");
               return;
             } else if (response?.error === "hearts") {
-              toast.error("Missing hearts.");
+              failfareControls.play();
+              openHeartsModal();
               return;
             }
 
@@ -217,13 +237,14 @@ export const Quiz = ({
     <>
       {correctAudio}
       {wrongAudio}
+      {failfareAudio}
 
       <Header
         hearts={hearts}
         percentage={Percentage}
         hasActiveSubscription={!!userDescription?.isActive}
       />
-      {hearts === 0 && <WithoutHeatsModal />}
+      {/* {hearts === 0 && <WithoutHeatsModal />} */}
       <div className="flex-1">
         <div className="h-full flex items-center justify-center">
           <div className="lg:min-h-[350px] lg:w-[600px] w-full px-6 lg:px-0 flex flex-col gap-y-12">

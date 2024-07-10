@@ -15,19 +15,6 @@ import {
 import { SelectLessons, SelectUnits } from "@/db/schema";
 
 const LearnPage = async () => {
-  // const userProgressData = getUserProgress();
-  // const courseProgressData = getCourseProgress();
-  // const lessonPercentageData = getLessonPercentage();
-  // const unitsData = getUnits();
-
-  // const [userProgress, units, courseProgress, lessonPercentage] =
-  //   await Promise.all([
-  //     userProgressData,
-  //     unitsData,
-  //     courseProgressData,
-  //     lessonPercentageData,
-  //   ]);
-  // TODO: check if doesn't make a bug
   const [userProgress, units, courseProgress, lessonPercentage] =
     await Promise.all([
       getUserProgress(),
