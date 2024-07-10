@@ -90,7 +90,7 @@ const seed = async () => {
     },
     {
       id: 2,
-      title: "Lesson 2",
+      title: "Verbs",
       unitId: 1,
       order: 2,
     },
@@ -220,14 +220,30 @@ const seed = async () => {
     },
   ]);
 
-  await db.insert(schema.userProgress).values({
-    userId: "test", // the correct user auth id
-    userName: "david",
-    userImageSrc: "/mascot.svg",
-    activeCourseId: 1,
-    hearts: 5,
-    points: 0,
-  });
+  await db.insert(schema.challenges).values([
+    // Spanish second lesson
+    {
+      id: 4,
+      lessonId: 2,
+      type: "SELECT",
+      question: 'Which one of these is the "the man"?',
+      order: 1,
+    },
+    {
+      id: 5,
+      lessonId: 2,
+      type: "ASSIST",
+      question: '"the man"',
+      order: 2,
+    },
+    {
+      id: 6,
+      lessonId: 2,
+      type: "SELECT",
+      question: 'Which one of these is the "the robot"?',
+      order: 3,
+    },
+  ]);
 
   console.log("Seeding Finished!");
 };
