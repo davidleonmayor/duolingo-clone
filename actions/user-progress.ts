@@ -9,6 +9,8 @@ import db from "@/db/drizzle";
 import { userProgress, challengeProgress, challenges } from "@/db/schema";
 import { getCourseById, getUserProgress } from "@/db/queries";
 
+const POINTS_TO_REFILL = 10;
+
 /**
  * Updates or inserts user progress for a given course.
  *
@@ -126,4 +128,32 @@ export const reduceHearts = async (challengeId: number) => {
   revalidatePath("/quests");
   revalidatePath("/leaderboard");
   revalidatePath(`/lesson${lessonId}`);
+};
+
+export const refillHearts = async () => {
+  const currentUserProgress = await getUserProgress();
+  if (!currentUserProgress) {
+    throw new Error("User progress not found");
+  }
+
+  if (currentUserProgress.hearts === 5) {
+    return { error: "hearts" };
+  }
+
+  if (currentUserProgress.points < POINTS_TO_REFILL) {
+    return { error: "points" };
+  }
+
+  await db
+    .update(userProgress)
+    .set({
+      hearts: 5, // max hearts can have
+      points: currentUserProgress.points - POINTS_TO_REFILL,
+    })
+    .where(eq(userProgress.userId, currentUserProgress.userId));
+
+  revalidatePath("/shop");
+  revalidatePath("/learn");
+  revalidatePath("/quests");
+  revalidatePath("/leaderboard");
 };
