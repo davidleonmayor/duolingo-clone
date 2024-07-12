@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 
 import { refillHearts } from "@/actions/user-progress";
+import { createStripeUrl } from "@/actions/user-subscription";
 
 import Image from "next/image";
 import { toast } from "sonner";
@@ -19,6 +20,7 @@ type Props = {
 export const Items = ({ hearts, points, hasActiveSubscription }: Props) => {
   const [pending, startTransition] = useTransition();
 
+  // Refill hearts action.
   const onRefillHearts = () => {
     if (pending || hearts === 5 || points < POINTS_TO_REFILL) {
       return;
@@ -35,6 +37,24 @@ export const Items = ({ hearts, points, hasActiveSubscription }: Props) => {
         })
         .catch(() => toast.error("Unspected error."));
     });
+  };
+
+  // Upgrade action.
+  const onUpgrade = () => {
+    if (pending) {
+      return;
+    }
+    console.log("befere createStripeUrl");
+
+    startTransition(() => {
+      createStripeUrl()
+        .then((res) => {
+          if (res.data) window.location.href = res.data;
+        })
+        .catch(() => toast.error("Something went wrong."));
+    });
+
+    console.log("after createStripeUrl");
   };
 
   return (
@@ -59,6 +79,19 @@ export const Items = ({ hearts, points, hasActiveSubscription }: Props) => {
             </div>
           )}
         </Button>
+      </div>
+
+      <div className="flex items-center w-full p-4 pt-8 gap-x-4 border-t-2">
+        {/* TODO add icon */}
+        <Image src="/unlimited.svg" alt="Unlimited" width={60} height={60} />
+        <div className="flex-1">
+          <p className="text-neutral-700 text-base lg:text-xl font-bold">
+            Unlimited hearts
+          </p>
+          <Button onClick={onUpgrade} disabled={pending}>
+            {hasActiveSubscription ? "settings" : "upgrade"}
+          </Button>
+        </div>
       </div>
     </ul>
   );

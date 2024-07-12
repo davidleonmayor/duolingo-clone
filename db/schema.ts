@@ -6,28 +6,21 @@ import {
   serial,
   text,
   boolean,
+  timestamp,
 } from "drizzle-orm/pg-core";
 
-/**
- * Relationships between "courses" entity with other entities
- */
 export const courses = pgTable("courses", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   imageSrc: text("image_src").notNull(),
 });
 
-/**
- * Relationships between "courses" entity other entities
- */
+// Relationships between "courses" entity other entities
 export const courseRelations = relations(courses, ({ many }) => ({
   userProgress: many(userProgress), // One course can have many user progress
   units: many(units), // One course can have many units
 }));
 
-/**
- * Relationships between "units" entity with other entities
- */
 export const units = pgTable("units", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -41,9 +34,7 @@ export const units = pgTable("units", {
   order: integer("order").notNull(),
 });
 
-/**
- * Relationships for the "units" entity with other entities
- */
+// Relationships for the "units" entity with other entities
 export const unitsRelations = relations(units, ({ many, one }) => ({
   course: one(courses, {
     fields: [units.courseId],
@@ -63,6 +54,7 @@ export const lessons = pgTable("lessons", {
   order: integer("order").notNull(),
 });
 
+// Relationships for the "lessons" entity with other entities
 export const lessonsRelations = relations(lessons, ({ one, many }) => ({
   unit: one(units, {
     fields: [lessons.unitId],
@@ -72,7 +64,6 @@ export const lessonsRelations = relations(lessons, ({ one, many }) => ({
 }));
 
 export const challengesEnum = pgEnum("type", ["SELECT", "ASSIST"]);
-
 export const challenges = pgTable("challenges", {
   id: serial("id").primaryKey(),
   lessonId: integer("lesson_id")
@@ -85,6 +76,7 @@ export const challenges = pgTable("challenges", {
   order: integer("order").notNull(),
 });
 
+// Relationships for the "challenges" entity with other entities
 export const challengesRelations = relations(challenges, ({ one, many }) => ({
   lesson: one(lessons, {
     fields: [challenges.lessonId],
@@ -107,6 +99,7 @@ export const challengeOption = pgTable("challenge_option", {
   audioSrc: text("audio_src"),
 });
 
+// Relationships for the "challenge_option" entity with other entities
 export const challengeOptionRelations = relations(
   challengeOption,
   ({ one }) => ({
@@ -128,6 +121,7 @@ export const challengeProgress = pgTable("challenge_progress", {
   completed: boolean("completed").notNull().default(false),
 });
 
+// Relationships for the "challenge_progress" entity with other entities
 export const challengeProgressRelations = relations(
   challengeProgress,
   ({ one }) => ({
@@ -149,12 +143,22 @@ export const userProgress = pgTable("user_progress", {
   points: integer("points").notNull().default(0),
 });
 
+// Relationships for the "user_progress" entity with other entities
 export const userProgressRelations = relations(userProgress, ({ one }) => ({
   activeCourse: one(courses, {
     fields: [userProgress.activeCourseId],
     references: [courses.id],
   }),
 }));
+
+export const userSubscription = pgTable("user_subscriptions", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  stripeCustomerId: text("stripe_customer_id").notNull().unique(),
+  stripeSubscriptionId: text("stripe_subscription_id").notNull().unique(),
+  stripePriceId: text("stripe_price_id").notNull(),
+  stripeCurrentPeriodEnd: timestamp("stripe_current_period_end").notNull(),
+});
 
 export type InsertCourses = typeof courses.$inferInsert;
 export type SelectCourses = typeof courses.$inferSelect;
