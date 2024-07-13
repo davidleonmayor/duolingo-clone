@@ -15,7 +15,7 @@ type Props = {
   totalCount: number;
   locked?: boolean;
   current?: boolean;
-  percentage: number; // TODO: is "percentage?"
+  percentage: number;
 };
 
 /**

@@ -180,3 +180,6 @@ export type SelectChallengeProgress = typeof challengeProgress.$inferSelect;
 
 export type InsertUserProgress = typeof userProgress.$inferInsert;
 export type SelectUserProgress = typeof userProgress.$inferSelect;
+
+export type InsertUserSubscription = typeof userSubscription.$inferInsert;
+export type SelectUserSubscription = typeof userSubscription.$inferSelect;

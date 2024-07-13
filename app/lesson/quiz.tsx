@@ -1,4 +1,5 @@
 "use client";
+import type { SelectUserSubscription } from "@/db/schema";
 
 import { useState, useTransition } from "react";
 import { useAudio, useMount } from "react-use";
@@ -19,7 +20,7 @@ import { ResultCard } from "./result-card";
 import { toast } from "sonner";
 import { Footer } from "./footer";
 import { QuestionBubble } from "./question-bubble";
-import { WithoutHeatsModal } from "./without-heats-modal";
+// import { WithoutHeatsModal } from "./without-heats-modal";
 import { Challenge } from "./challenge";
 
 type InitialLessonChallenges = SelectChallenges & {
@@ -27,12 +28,18 @@ type InitialLessonChallenges = SelectChallenges & {
   challengeOptions: SelectChallengeOptions[];
 };
 
+type UserSubscription =
+  | (SelectUserSubscription & {
+      isActive: boolean;
+    })
+  | null;
+
 type Props = {
   initialPercentage: number;
   initialHearts: number;
   initialLessonId: number;
   initialLessonChallenges: InitialLessonChallenges[];
-  userDescription: any; // TODO: Define userDescription type from db
+  userSubscription: UserSubscription;
 };
 
 /**
@@ -42,14 +49,14 @@ type Props = {
  * @param {number} initialHearts - Initial number of user's hearts.
  * @param {number} initialLessonId - ID of the initial lesson.
  * @param {InitialLessonChallenges[]} initialLessonChallenges - List of initial lesson challenges.
- * @param {any} userDescription - User description (for verifying active subscription, for example).
+ * @param {UserSubscription} userSubscription - User description (for verifying active subscription, for example).
  */
 export const Quiz = ({
   initialPercentage,
   initialHearts,
   initialLessonId,
   initialLessonChallenges,
-  userDescription,
+  userSubscription,
 }: Props) => {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -171,6 +178,9 @@ export const Quiz = ({
               failfareControls.play();
               openHeartsModal();
               return;
+            } else if (response?.error === "subscription") {
+              toast.error("subscription");
+              return;
             }
 
             setStatus("wrong");
@@ -242,7 +252,7 @@ export const Quiz = ({
       <Header
         hearts={hearts}
         percentage={Percentage}
-        hasActiveSubscription={!!userDescription?.isActive}
+        hasActiveSubscription={!!userSubscription?.isActive}
       />
       {/* {hearts === 0 && <WithoutHeatsModal />} */}
       <div className="flex-1">

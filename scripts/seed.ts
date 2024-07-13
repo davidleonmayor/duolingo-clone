@@ -148,6 +148,28 @@ const seed = async () => {
       question: 'Which one of these is the "the robot"?',
       order: 3,
     },
+    // Spanish second lesson
+    {
+      id: 4,
+      lessonId: 2,
+      type: "SELECT",
+      question: 'Which one of these is the "the man"?',
+      order: 1,
+    },
+    {
+      id: 5,
+      lessonId: 2,
+      type: "ASSIST",
+      question: '"the man"',
+      order: 2,
+    },
+    {
+      id: 6,
+      lessonId: 2,
+      type: "SELECT",
+      question: 'Which one of these is the "the robot"?',
+      order: 3,
+    },
   ]);
   await db.insert(schema.challengeOption).values([
     {
@@ -218,30 +240,27 @@ const seed = async () => {
       text: "el robot",
       audioSrc: "/es_robot.mp3",
     },
-  ]);
-
-  await db.insert(schema.challenges).values([
     // Spanish second lesson
     {
-      id: 4,
-      lessonId: 2,
-      type: "SELECT",
-      question: 'Which one of these is the "the man"?',
-      order: 1,
+      id: 10,
+      challengeId: 4,
+      correct: false,
+      text: "el robot",
+      audioSrc: "/es_robot.mp3",
     },
     {
-      id: 5,
-      lessonId: 2,
-      type: "ASSIST",
-      question: '"the man"',
-      order: 2,
+      id: 11,
+      challengeId: 4,
+      correct: false,
+      text: "la mujer",
+      audioSrc: "/es_woman.mp3",
     },
     {
-      id: 6,
-      lessonId: 2,
-      type: "SELECT",
-      question: 'Which one of these is the "the robot"?',
-      order: 3,
+      id: 12,
+      challengeId: 4,
+      correct: true,
+      text: "el hombre",
+      audioSrc: "/es_man.mp3",
     },
   ]);
 

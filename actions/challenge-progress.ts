@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import db from "@/db/drizzle";
 import { and, eq } from "drizzle-orm";
 
-import { getUserProgress } from "@/db/queries";
+import { getUserProgress, getUserSubscription } from "@/db/queries";
 import { challenges, challengeProgress, userProgress } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 
@@ -23,7 +23,8 @@ export const upsertChallengeProgress = async (challengeId: number) => {
 
   // Retrieve the current user's progress
   const currentUserProgress = await getUserProgress();
-  // TODO: Handle submission query later
+  const userSubscription = await getUserSubscription();
+
   if (!currentUserProgress) {
     throw new Error("User progress not found");
   }
@@ -47,8 +48,11 @@ export const upsertChallengeProgress = async (challengeId: number) => {
   });
 
   const isPractice = !!existingChallengeProgress; // If there's existing progress, it's a practice challenge
-  // TODO: Not if user has a subscription
-  if (currentUserProgress.hearts === 0 && !isPractice) {
+  if (
+    !userSubscription?.isActive &&
+    currentUserProgress.hearts === 0 &&
+    !isPractice
+  ) {
     return { error: "hearts" };
   }
 
@@ -60,6 +64,7 @@ export const upsertChallengeProgress = async (challengeId: number) => {
         completed: true,
       })
       .where(eq(challengeProgress.id, existingChallengeProgress.id));
+
     // Update user progress with additional hearts and points
     await db
       .update(userProgress)

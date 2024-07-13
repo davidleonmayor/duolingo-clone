@@ -8,6 +8,7 @@ import { Header } from "./header";
 
 import {
   getCourseProgress,
+  getUserSubscription,
   getLessonPercentage,
   getUnits,
   getUserProgress,
@@ -15,13 +16,19 @@ import {
 import { SelectLessons, SelectUnits } from "@/db/schema";
 
 const LearnPage = async () => {
-  const [userProgress, units, courseProgress, lessonPercentage] =
-    await Promise.all([
-      getUserProgress(),
-      getUnits(),
-      getCourseProgress(),
-      getLessonPercentage(),
-    ]);
+  const [
+    userProgress,
+    userSubscription,
+    units,
+    courseProgress,
+    lessonPercentage,
+  ] = await Promise.all([
+    getUserProgress(),
+    getUserSubscription(),
+    getUnits(),
+    getCourseProgress(),
+    getLessonPercentage(),
+  ]);
 
   if (!userProgress || !userProgress.activeCourse) {
     redirect("/courses");
@@ -38,7 +45,7 @@ const LearnPage = async () => {
           activeCourse={userProgress.activeCourse}
           hearts={userProgress.hearts}
           points={userProgress.points}
-          hasActiveSubscription={false}
+          hasActiveSubscription={!!userSubscription?.isActive}
         />
       </StickyWrapper>
       <FeedWrapper>

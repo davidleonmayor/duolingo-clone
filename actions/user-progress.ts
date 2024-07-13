@@ -7,9 +7,13 @@ import { revalidatePath } from "next/cache";
 import { and, eq } from "drizzle-orm";
 import db from "@/db/drizzle";
 import { userProgress, challengeProgress, challenges } from "@/db/schema";
-import { getCourseById, getUserProgress } from "@/db/queries";
+import {
+  getCourseById,
+  getUserProgress,
+  getUserSubscription,
+} from "@/db/queries";
 
-const POINTS_TO_REFILL = 10;
+import { POINTS_TO_REFILL } from "@/constants/index";
 
 /**
  * Updates or inserts user progress for a given course.
@@ -31,10 +35,9 @@ export const upserUserProgress = async (courseId: number) => {
     throw new Error("Course not found");
   }
 
-  // TODO: Enable once units and lessons are added
-  // if (!course.units.length || !course.units[0].lessons.length) {
-  //   throw new Error("Course is empty");
-  // }
+  if (!course.units.length || !course.units[0].lessons.length) {
+    throw new Error("Course is empty");
+  }
 
   const existingUserProgress = await getUserProgress();
 
@@ -84,7 +87,7 @@ export const reduceHearts = async (challengeId: number) => {
     throw new Error("User progress not found");
   }
 
-  // TODO: Get user subscription
+  const userSubscription = await getUserSubscription();
 
   // Retrieve the challenge
   const challenge = await db.query.challenges.findFirst({
@@ -111,7 +114,11 @@ export const reduceHearts = async (challengeId: number) => {
 
   // TODO Handle subscription
 
-  if (currentUserProgress.hearts === 0) {
+  if (userSubscription?.isActive) {
+    return { error: "subscription" };
+  }
+
+  if (currentUserProgress.hearts === 0 && !userSubscription?.isActive) {
     return { error: "hearts" };
   }
 
@@ -130,6 +137,12 @@ export const reduceHearts = async (challengeId: number) => {
   revalidatePath(`/lesson${lessonId}`);
 };
 
+/**
+ * Refills the user's hearts to the maximum value if the user has enough points.
+ *
+ * @returns {Promise<object>} An object indicating success or specific error conditions.
+ * @throws {Error} If user progress is not found.
+ */
 export const refillHearts = async () => {
   const currentUserProgress = await getUserProgress();
   if (!currentUserProgress) {
