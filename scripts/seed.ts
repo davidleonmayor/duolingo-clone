@@ -24,6 +24,7 @@ const seed = async () => {
   await db.delete(schema.challenges);
   await db.delete(schema.challengeOption);
   await db.delete(schema.challengeProgress);
+  await db.delete(schema.userSubscription);
 
   console.log("Inserting data...");
   await db.insert(schema.courses).values([

@@ -1,35 +1,15 @@
 import { redirect } from "next/navigation";
 
+import { QUESTS } from "@/constants/index";
+
 import { getUserProgress, getUserSubscription } from "@/db/queries";
 
 import { FeedWrapper } from "@/components/feed-wrapper";
 import { UserProgress } from "@/components/user-progress";
 import { StickyWrapper } from "@/components/sticky-wrapper";
+import { Promo } from "@/components/promo";
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
-
-const quests = [
-  {
-    title: "Earn 20 XP",
-    value: 20,
-  },
-  {
-    title: "Earn 50 PX",
-    value: 50,
-  },
-  {
-    title: "Earn 100 PX",
-    value: 100,
-  },
-  {
-    title: "Earn 500 PX",
-    value: 500,
-  },
-  {
-    title: "Earn 1000 PX",
-    value: 1000,
-  },
-];
 
 type Props = {};
 
@@ -55,6 +35,7 @@ const QuestsPage = async ({}: Props) => {
           points={userProgress.points}
           hasActiveSubscription={isPro}
         />
+        {!isPro && <Promo />}
       </StickyWrapper>
       <FeedWrapper>
         <div className="w-full flex flex-col items-center">
@@ -67,7 +48,7 @@ const QuestsPage = async ({}: Props) => {
           </p>
 
           <ul className="w-full">
-            {quests.map((quest, index) => {
+            {QUESTS.map((quest, index) => {
               const progress = (userProgress.points / quest.value) * 100;
 
               return (

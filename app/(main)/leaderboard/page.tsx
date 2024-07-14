@@ -12,6 +12,8 @@ import { StickyWrapper } from "@/components/sticky-wrapper";
 import { Separator } from "@/components/ui/separator";
 import { Ranking } from "./ranking";
 import Image from "next/image";
+import { Promo } from "@/components/promo";
+import { Quests } from "@/components/quests";
 
 type Props = {};
 
@@ -38,6 +40,8 @@ const LeaderboardPage = async ({}: Props) => {
           points={userProgress.points}
           hasActiveSubscription={isPro}
         />
+        {!isPro && <Promo />}
+        <Quests points={userProgress.points} />
       </StickyWrapper>
       <FeedWrapper>
         <div className="w-full flex flex-col items-center">
