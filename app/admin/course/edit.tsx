@@ -10,7 +10,7 @@ export const CourseEdit = () => {
   return (
     <Edit>
       <SimpleForm>
-        <NumberInput label="Id" source="id" validate={required()} />
+        <TextInput label="Id" source="id" validate={required()} />
         <TextInput label="Title" source="title" validate={required()} />
         <TextInput label="Image" source="imageSrc" validate={required()} />
       </SimpleForm>
